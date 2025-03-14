@@ -6,26 +6,20 @@
       use input_file_module
       use organic_mineral_mass_module
       use maximum_data_module
-
-      implicit none
       
-      character (len=80) :: titldum = ""
-      character (len=80) :: header = ""
-      integer :: eof = 0
-      integer :: imax = 0
-      integer :: ob1 = 0
-      integer :: ob2 = 0
-      logical :: i_exist              !none       |check to determine if file exists
-
-      integer :: ii = 0
-      integer :: idr = 0
-      integer :: idr_om = 0
-      integer :: iob = 0
+      character (len=80) :: titldum = ""    !!na     |dummy title
+      character (len=80) :: header  = ""    !!na     |dummy header
+      character (len=16) :: namedum = ""    !!na     |dummy name
+      integer :: eof                = 0     !!na     |end of file
+      integer :: imax               = 0     !!na     |maximum number of data
+      integer :: ob1                = 0     !!na     |object start index
+      integer :: ob2                = 0     !!na     |object end index
+      logical :: i_exist                    !!na     |check to determine if file exists
 
       eof = 0
       imax = 0
       
-      !read delivery ratio organic-mineral data
+      !!- inquire if dr_om.del exist and read delivery ratio organic-mineral data
       inquire (file=in_delr%om, exist=i_exist)
       if (i_exist .or. in_delr%om /= "null") then
         do
@@ -42,9 +36,9 @@
           end do
           
           db_mx%dr_om = imax
-          
-          allocate (dr(0:imax))       !
-          allocate (dr_om_num(0:imax), source = 0)
+          !!-- allocate dr_om object
+          allocate (dr(0:imax))       ! change to dr_om
+          allocate (dr_om_num(0:imax))
           allocate (dr_om_name(0:imax))
           rewind (107)
           read (107,*,iostat=eof) titldum
@@ -52,7 +46,7 @@
           read (107,*,iostat=eof) header
           if (eof < 0) exit
       
-          !read all delivery ratio data
+          !!-- read all delivery ratio data
           do ii = 1, db_mx%dr_om
             read (107,*,iostat=eof) titldum
             if (eof < 0) exit
@@ -65,7 +59,7 @@
         end do
       end if
       
-      ! xwalk with dr file to get sequential number
+      !!- xwalk with dr file to get sequential number
       do idr = 1, db_mx%dr
         do idr_om = 1, db_mx%dr_om
           if (dr_db(idr)%om_file == dr_om_name(idr_om)) then
@@ -75,7 +69,7 @@
         end do
       end do
       
-      !set dr_om object hydrograph
+      !!- set dr_om object hydrograph
       ob1 = sp_ob1%dr
       ob2 = sp_ob1%dr + sp_ob%dr - 1
       do iob = ob1, ob2

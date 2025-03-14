@@ -1,15 +1,14 @@
       subroutine dr_ru
     
       use hydrograph_module
-      use hru_lte_module
-      use ru_module
-      use hru_module, only : ihru, tconc
+      use ru_module1
+      !use hru_module, only : ihru, tconc
       
       implicit none
 
-      integer :: ii = 0             !none          |counter
-      integer :: ielem = 0          !none          |counter
-      real :: rto = 0.              !none          |cloud cover factor
+      integer :: ii, ihru, iru                 !none          |counter
+      integer :: ielem              !none          |counter
+      real :: rto                   !none          |cloud cover factor
       
      ! compute delivery ratio for each hru in the sub
       do iru = 1, sp_ob%ru
@@ -20,9 +19,7 @@
           if (ru_elem(ielem)%dr_name == "calc" .or. ru_elem(ielem)%dr_name == "0") then
             select case (ru_elem(ielem)%obtyp)
             case ("hru")
-              rto = tconc(ihru) / ru_tc(iru)
-            case ("hlt")
-              rto = (hlt_db(ihru)%tc / 3600.) / ru_tc(iru)
+              !rto = tconc(ihru) / ru_tc(iru)
             case ("sdc")
               rto = 1.
             case ("ru")

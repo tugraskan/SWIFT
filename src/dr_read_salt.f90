@@ -6,26 +6,16 @@
       use organic_mineral_mass_module
       use constituent_mass_module
       use maximum_data_module
-
-      implicit none
  
-      character (len=80) :: titldum = ""
-      character (len=80) :: header = ""
-      integer :: eof = 0
-      integer :: imax = 0
-      integer :: ob1 = 0
-      integer :: ob2 = 0
-      logical :: i_exist              !none       |check to determine if file exists
-      integer :: idr_salt = 0
-      integer :: ii = 0
-      integer :: isalt = 0
-      integer :: idr = 0
-      integer :: iob = 0
-
-      eof = 0
-      imax = 0
+      character (len=80) :: titldum = ""    !!na    |dummy title
+      character (len=80) :: header  = ""    !!na    |dummy header
+      integer :: eof                = 0     !!na    |end of file
+      integer :: imax               = 0     !!na    |maximum number of data
+      integer :: ob1                = 0     !!na    |object start index
+      integer :: ob2                = 0     !!na    |object end index
+      logical :: i_exist                    !!na    |check to determine if file exists
       
-      !read all export coefficient data
+      !!- inquire if dr_salt.del exist and read all export coefficient data
       inquire (file=in_delr%salt, exist=i_exist)
       if (i_exist .or. in_delr%salt /= "null") then
         do
@@ -42,12 +32,12 @@
           end do
           
           db_mx%dr_salt = imax
-          
+          !!-- allocate dr_salt object
           allocate (dr_salt(imax))
           do idr_salt = 1, imax
-            allocate (dr_salt(idr_salt)%salt(cs_db%num_salts), source = 0.)
+            allocate (dr_salt(idr_salt)%salt(cs_db%num_salts))
           end do
-          allocate (dr_salt_num(imax), source = 0)
+          allocate (dr_salt_num(imax))
           allocate (dr_salt_name(imax))
           rewind (107)
           read (107,*,iostat=eof) titldum
@@ -55,7 +45,7 @@
           read (107,*,iostat=eof) header
           if (eof < 0) exit
       
-          !read all export coefficient data
+          !!-- read all export coefficient data
           do ii = 1, db_mx%dr_salt
             read (107,*,iostat=eof) titldum
             if (eof < 0) exit
@@ -68,7 +58,7 @@
         end do
       end if
             
-      ! xwalk with dr file to get sequential number
+      !!- xwalk with dr file to get sequential number
       do idr = 1, db_mx%dr
         do idr_salt = 1, db_mx%dr_salt
           if (dr_db(idr)%salts_file == dr_salt_name(idr_salt)) then
@@ -77,7 +67,7 @@
           end if
         end do
       end do
-            !set exco object hydrograph
+    !!- set exco object hydrograph
       ob1 = sp_ob1%dr
       ob2 = sp_ob1%dr + sp_ob%dr - 1
       do iob = ob1, ob2

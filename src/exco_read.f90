@@ -1,73 +1,39 @@
       subroutine exco_read
-    
-      use hydrograph_module
-      use input_file_module
-      use organic_mineral_mass_module
-      use maximum_data_module
-      
+     
+      use exco_module1
+      use hydrograph_module  !, only : sp_ob, exco2
+         
       implicit none
- 
-      character (len=80) :: titldum = ""!           |title of file
-      character (len=80) :: header = "" !           |header of file
-      character (len=16) :: namedum = ""!           |
-      integer :: eof = 0              !           |end of file
-      integer :: imax = 0             !none       |determine max number for array (imax) and total number in file
-      integer :: ob1 = 0              !none       |beginning of loop
-      integer :: ob2 = 0              !none       |ending of loop
-      logical :: i_exist              !none       |check to determine if file exists
-      integer :: ii = 0               !none       |counter
-      integer :: iob = 0              !none       |counter
-      integer :: iexco = 0            !           |
-      
 
+      character (len=80) :: titldum   !             |title of file
+      integer :: eof                  !             |end of file
+      integer :: iexco_db             !none         |number of channel data inputs
+      integer :: iexco                !none         |channel counter
+      integer :: i                    !none         |counter
+      integer :: k                    !none         |counter
+      
       eof = 0
-      imax = 0
       
-      !read all export coefficient data
-      inquire (file=in_exco%exco, exist=i_exist)
-      if (i_exist .or. in_exco%exco /= 'null') then
-        do
-          open (107,file=in_exco%exco)
-          read (107,*,iostat=eof) titldum
-          if (eof < 0) exit
-          read (107,*,iostat=eof) header
-          if (eof < 0) exit
-          imax = 0
-          do while (eof == 0)
-            read (107,*,iostat=eof) titldum
-            if (eof < 0) exit
-            imax = imax + 1
-          end do
-          
-          db_mx%exco = imax
-          
-          allocate (exco(0:imax))
-          rewind (107)
-          read (107,*,iostat=eof) titldum
-          if (eof < 0) exit
-          read (107,*,iostat=eof) header
-          if (eof < 0) exit
+      open (107,file = "exco.dat",recl=1200)
+      read (107,*) titldum   !title
+      read (107,*) iexco_db
+      read (107,*) titldum   !header
+      read (107,*) titldum   !units
+            
+      allocate (exco1(sp_ob%exco))
+      allocate (exco2(sp_ob%exco))
       
-          !read all export coefficient data
-          do ii = 1, db_mx%exco
-            read (107,*,iostat=eof) titldum
-            if (eof < 0) exit
-            backspace (107)
-            read (107,*,iostat=eof) namedum, exco(ii)   
-            if (eof < 0) exit
-          end do
-          close (107)
-          exit
-        end do
-      end if
-      
-      !set exco object hydrograph
-      ob1 = sp_ob1%exco
-      ob2 = sp_ob1%exco + sp_ob%exco - 1
-      do iob = ob1, ob2
-        iexco = ob(iob)%props
-        ob(iob)%hd(1) = exco(iexco)
+      !! read hru data
+      do iexco = 1, iexco_db
+        read (107,*,iostat=eof) i
+        if (eof < 0) exit
+        backspace (107)
+        !! read from the aquifer database file named aquifer.aqu
+        !read (107,*,iostat=eof) k, exco1(i)%name, exco2(i)%load
+        if (eof < 0) exit
       end do
+
+      close (107)
       
       return
       end subroutine exco_read

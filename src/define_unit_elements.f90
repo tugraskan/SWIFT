@@ -6,12 +6,14 @@
 
       integer, intent (in)  :: num_elem
       integer, intent (out)  :: ielem
-      integer :: ii = 0               !none       |counter
-      integer :: ie1 = 0              !none       |beginning of loop
-      integer :: ie2 = 0              !none       |ending of loop  
-      integer :: ie = 0               !none       |counter
+      integer :: ii                   !!none       |counter
+      integer :: ie1                  !!none       |beginning of loop
+      integer :: ie2                  !!none       |ending of loop  
+      integer :: ie                   !!none       |counter
 
-      !!save the object number of each defining unit
+      !!- save the object number of each defining unit
+	  !!- initialize the element count and loop through the elements
+      !!  to determine the number of defining units
           ielem = 0
           ii = 1
           do while (ii <= num_elem)
@@ -45,8 +47,9 @@
                 ii = ii + 2
               end if
             end if
-          end do
-          allocate (defunit_num(ielem), source = 0)
+		  end do
+		  !!- allocate memory for the defining unit numbers based on the total count
+          allocate (defunit_num(ielem))
 
           ielem = 0
           ii = 1

@@ -5,19 +5,17 @@
       use constituent_mass_module
       !use organic_mineral_mass_module
       use maximum_data_module
-
-      implicit none
  
-      character (len=80) :: titldum = ""
-      character (len=80) :: header = ""
-      integer :: eof = 0
-      integer :: imax = 0
-      logical :: i_exist              !none       |check to determine if file exists
-      integer :: ii = 0
+      character (len=80) :: titldum = ""    !!na    |dummy title
+      character (len=80) :: header  = ""    !!na    |dummy header
+      character (len=16) :: namedum = ""    !!na    |dummy name
+      integer :: eof                = 0     !!na    |end of file
+      integer :: imax               = 0     !!na    |max index
+      logical :: i_exist                    !!na    |check to determine if file exists
 
       eof = 0
       
-      !read all delivery ratio data
+      !!- inquire if 'delratio.del exist and read all delivery ratio data
       inquire (file=in_delr%del_ratio, exist=i_exist)
       if (i_exist .or. in_delr%del_ratio /= "null") then
         do
@@ -49,13 +47,19 @@
           close (107)
           exit
         end do
-      end if
+	  end if
 
-      ! read delivery ratio data for all constituent types
+      !!- read delivery ratio data for all constituent types 
+	  !! call dr_read_om
       call dr_read_om
+      
+      !!-- if there are any pest comstituents, call dr_read_pest
       if (cs_db%num_pests > 0) call dr_read_pest
+      !!-- if there are any path comstituents, call dr_path_read
       if (cs_db%num_paths > 0) call dr_path_read
+      !!-- if there are any metals comstituents, call dr_read_hmet
       if (cs_db%num_metals > 0) call dr_read_hmet
+      !!-- if there are any salts comstituents, call dr_read_salt
       if (cs_db%num_salts > 0) call dr_read_salt
       
       return
