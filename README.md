@@ -1,9 +1,10 @@
 [![Release](https://img.shields.io/github/release/tugraskan/SWIFT.svg?style=flat-square)](https://github.com/tugraskan/SWIFT/releases)
 # SWIFT
 
-The **Soil and Water Integrated Flow Tool** [SWIFT](https://swift.gitbook.io/docs) is an open source model jointly developed by the USDA Agricultural Research Service ([USDA-ARS](http://ars.usda.gov)) and Texas A&M AgriLife Research, part of The Texas A&M University System. Model contributions have been made by Colorado State University and others. SWIFT is a small watershed to river basin-scale model to simulate the quality and quantity of surface and ground water and predict the environmental impact of land use, land management practices, and climate change. SWIFT is widely used in assessing soil erosion prevention and control, non-point source pollution control and regional management in watersheds.
+The **Soil and Water Integrated Flow Tool** ([SWIFT](https://swift.gitbook.io/docs)) is an open-source model for rapidly estimating sediment and nutrient loads from small watersheds in the United States. Built upon the foundation of the SWAT+ framework, SWIFT leverages readily available data—such as watershed size, land use, and geographic location—to generate load estimates along with distributions that capture the inherent uncertainties of the estimation process. It employs export coefficients originally derived from the Soil and Water Assessment Tool (SWAT) and incorporates delivery ratios informed by the Conservation Effects and Assessment Project (CEAP). This approach makes SWIFT a practical tool for assessing non-point source pollution, soil erosion prevention, and the broader environmental impacts of land use and management practices.
 
-This repository contains the latest SWIFT source code and some test data to create and test the executable for various compiler and platforms. 
+This repository is based on the original SWAT+ repository and has been updated to incorporate the SWIFT framework. It includes the latest SWIFT source code along with test data to compile and validate the executable across various compilers and platforms.
+ 
 
 ## Repository
 
@@ -81,8 +82,8 @@ __The following sections are emphasizing various development aspects.__
 
 [SWIFT Source Documentation on GitHub](https://tugraskan.github.io/SWIFT)
 
-[SWIFT Input/Output Documentation on Gitbook](https://swift.gitbook.io/docs)
+! Planned [SWIFT Input/Output Documentation on Gitbook]()
 
-[SWIFT at TAMU](https://swift.tamu.edu)
+[SWIFT at TAMU](https://blackland.tamu.edu/news/2023/acre-and-swift/)
 
-[Older SWIFT versions on Bitbucket](https://bitbucket.org/blacklandgrasslandmodels/modular_swift/src/master)
+
