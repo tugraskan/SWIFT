@@ -1,6 +1,6 @@
-# SWAT+ CI for GitHub, O. David, 2024, LGPL 2.1
+# SWIFT CI for GitHub, O. David, 2024, LGPL 2.1
 
-name: Build/Test SWAT+
+name: Build/Test SWIFT
 
 on:
   push:
@@ -47,7 +47,7 @@ jobs:
           compiler: ${{ matrix.toolchain.compiler }}
           version: ${{ matrix.toolchain.version }}
 
-      - name: Build SWAT+
+      - name: Build SWIFT
         id: build_exe
         run: |
           echo ${{ env.FC }}
@@ -75,8 +75,8 @@ jobs:
           cmake --build build
 
           # check
-          ls -hl build/swatplus-*
-          file build/swatplus-*
+          ls -hl build/swift-*
+          file build/swift-*
         shell: bash
 
       - name: Run Tests
@@ -91,4 +91,3 @@ jobs:
           echo "Test Log:"
           cat build/Testing/Temporary/LastTest.log
         shell: bash
-

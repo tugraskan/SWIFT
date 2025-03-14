@@ -1,22 +1,22 @@
-[![Release](https://img.shields.io/github/release/swat-model/swatplus.svg?style=flat-square)](https://github.com/swat-model/swatplus/releases)
-# SWAT+
+[![Release](https://img.shields.io/github/release/tugraskan/SWIFT.svg?style=flat-square)](https://github.com/tugraskan/SWIFT/releases)
+# SWIFT
 
-The **Soil and Water Assessment Tool Plus** [SWAT+](https://swatplus.gitbook.io/docs) is an open source model jointly developed by the USDA Agricultural Research Service ([USDA-ARS](http://ars.usda.gov)) and Texas A&M AgriLife Research, part of The Texas A&M University System. Model contributions have been made by Colorado State University and others. SWAT+ is a small watershed to river basin-scale model to simulate the quality and quantity of surface and ground water and predict the environmental impact of land use, land management practices, and climate change. SWAT is widely used in assessing soil erosion prevention and control, non-point source pollution control and regional management in watersheds.
+The **Soil and Water Integrated Flow Tool** [SWIFT](https://swift.gitbook.io/docs) is an open source model jointly developed by the USDA Agricultural Research Service ([USDA-ARS](http://ars.usda.gov)) and Texas A&M AgriLife Research, part of The Texas A&M University System. Model contributions have been made by Colorado State University and others. SWIFT is a small watershed to river basin-scale model to simulate the quality and quantity of surface and ground water and predict the environmental impact of land use, land management practices, and climate change. SWIFT is widely used in assessing soil erosion prevention and control, non-point source pollution control and regional management in watersheds.
 
-This repository contains the latest SWAT+ source code and some test data to create and test the executable for various compiler and platforms. 
+This repository contains the latest SWIFT source code and some test data to create and test the executable for various compiler and platforms. 
 
 ## Repository
 
-Get the SWAT+ sources by cloning the forked repository using `git`.  
+Get the SWIFT sources by cloning the forked repository using `git`.  
 
 ```bash
-$ git clone https://github.com/<user>/swatplus.git
+$ git clone https://github.com/<user>/swift.git
 ```
 
 Or, download the sources directly from the artifacts, unzip. Use a tagged version (preferred).
 
 ```bash
-$ wget https://github.com/swat-model/swatplus/archive/refs/tags/61.0.zip
+$ wget https://github.com/tugraskan/SWIFT/archive/refs/tags/61.0.zip
 ```
 
 ## Directory Structure
@@ -24,7 +24,7 @@ $ wget https://github.com/swat-model/swatplus/archive/refs/tags/61.0.zip
 The directory structure is shown below. The `build` directory gets created and populated during the generation of the `cmake` files and the `cmake` build. 
 
 ```
-swatplus
+swift
 ├── build
 │   ├── ...
 │   ├── *.mod
@@ -32,7 +32,7 @@ swatplus
 │   └── CMakeFiles
 │       ├── Makefile.cmake
 │       ├── ...
-│       └── swatplus-<ver>.dir
+│       └── swift-<ver>.dir
 │           ├── *.mod.tstamp
 │           ├── src
 │           └── ...
@@ -40,7 +40,7 @@ swatplus
 │   ├── Ames_sub1
 │   ├── <other>
 │   └── ...
-├── src                       ---> contains all swatplus Fortran source files
+├── src                       ---> contains all swift Fortran source files
 │   └── *.f90
 ├── test                      ---> contains all unit tests sources
 │   ├── check.py
@@ -52,9 +52,9 @@ swatplus
 └── ...
 ```
 
-## Developing SWAT+
+## Developing SWIFT
 
-This GitHub repository is setup to build, test, and deploy SWAT+ using the CMake tool. CMake is a cross-platform build tool that can be used at the command line but it is also supported through various IDEs, etc. More information can be found at [http://cmake.org](http://cmake.org). 
+This GitHub repository is setup to build, test, and deploy SWIFT using the CMake tool. CMake is a cross-platform build tool that can be used at the command line but it is also supported through various IDEs, etc. More information can be found at [http://cmake.org](http://cmake.org). 
 
 In addition to CMake, the following tools are also needed:
 
@@ -68,7 +68,7 @@ Use the operating system's preferred way of adding those tools to your installat
 
 __The following sections are emphasizing various development aspects.__
 
-* [Configuring, Building, Installing SWAT+ using cmake](doc/Building.md)
+* [Configuring, Building, Installing SWIFT using cmake](doc/Building.md)
 - [Scenario Testing](doc/Testing.md)
 
 - [Tagging and Versioning](doc/Tagging.md)
@@ -79,10 +79,10 @@ __The following sections are emphasizing various development aspects.__
 
 ## Documentation and References
 
-[SWAT+ Source Documentation on GitHub](https://swat-model.github.io/swatplus)
+[SWIFT Source Documentation on GitHub](https://tugraskan.github.io/SWIFT)
 
-[SWAT+ Input/Output Documentation on Gitbook](https://swatplus.gitbook.io/docs)
+[SWIFT Input/Output Documentation on Gitbook](https://swift.gitbook.io/docs)
 
-[SWAT at TAMU](https://swat.tamu.edu)
+[SWIFT at TAMU](https://swift.tamu.edu)
 
-[Older SWAT+ versions on Bitbucket](https://bitbucket.org/blacklandgrasslandmodels/modular_swatplus/src/master)
+[Older SWIFT versions on Bitbucket](https://bitbucket.org/blacklandgrasslandmodels/modular_swift/src/master)

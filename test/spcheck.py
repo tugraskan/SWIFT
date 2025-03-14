@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Generic SWAT+ checker, O. David, CSU, 2024
+# Generic SWIFT checker, O. David, CSU, 2024
 # - runs through ctest with known scenarios
 # - Allows to execute various executables against a scenario
 # - Allows to compare scenario outputs for output deltas
@@ -164,7 +164,7 @@ def run_swat(swat_model: str, wdir: str) -> int:
     p = Popen(executable=swat_model, args=[], cwd=wdir, stdout=sys.stdout, stderr=sys.stdout)
     p.wait()
     if p.returncode != 0:
-        print(f"\nSWAT+ exited with code: {p.returncode}")
+        print(f"\nSWIFT exited with code: {p.returncode}")
     else:
         print(f"\nCreated new output in {wdir}")
     return p.returncode
@@ -312,7 +312,7 @@ runs_dir = "runs"
 print_status_line = True
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser("spcheck", description = 'Utilities for running SWAT+ scenarios')
+    parser = argparse.ArgumentParser("spcheck", description = 'Utilities for running SWIFT scenarios')
     subparsers = parser.add_subparsers()
 
     run_parser = subparsers.add_parser('run', help='run a scenario')

@@ -1,6 +1,6 @@
-# SWAT+ CI for GitHub, O. David, 2024, LGPL 2.1
+# SWIFT CI for GitHub, O. David, 2024, LGPL 2.1
 
-name: Document SWAT+ 
+name: Document SWIFT 
   
 on:
   push:
@@ -38,7 +38,7 @@ jobs:
         sudo apt install -y graphviz
         sudo pip install ford 
 
-    - name: Build SWAT+ Documentation
+    - name: Build SWIFT Documentation
       run: |
         T=`git describe --tags --abbrev=0`
         cmake -B build -D TAG=${T}

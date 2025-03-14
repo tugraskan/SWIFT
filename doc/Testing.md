@@ -2,17 +2,17 @@
 
 
 
-Running tests may reveal potential regressions of code changes against existing and assumed correct output. Here, we test the newly built SWAT+ model executable against known scenario outputs and compare the results. Results should not differ significantly after code changes. Each SWAT+ unit test consists of one reference scenario run, located in `data`. The repository's `test` directory contains the Python test scripts.
+Running tests may reveal potential regressions of code changes against existing and assumed correct output. Here, we test the newly built SWIFT model executable against known scenario outputs and compare the results. Results should not differ significantly after code changes. Each SWIFT unit test consists of one reference scenario run, located in `data`. The repository's `test` directory contains the Python test scripts.
 
 Testing is performed through `cmake` and `ctest` implementing the following process:
 
-1. The `data` folder contains SWAT+ reference scenarios. Those scenarios have input and valid output data. The output data is considered `golden`, it means they represent an accepted correct output of the model.
+1. The `data` folder contains SWIFT reference scenarios. Those scenarios have input and valid output data. The output data is considered `golden`, it means they represent an accepted correct output of the model.
 
 2. The test related entries in `CMakelists.txt` are shown below. Python is required. Various variables are set to point to resources, such as the script that performs the check (`check.py`), the path to the executable, and paths to the reference data set and test data directory. Relative and Absolute tolerances for values deviations are specified via `rel_err` and `abs_err`. Per default, the relative error is 1% and the absolute error 1E-8. The individual tests are followed with the `add_test` commands.
 
 3. Building the project with `cmake -B build`. Two tests are being generated, `Ames_sub1` and `Ithaca_sub6`. Additional tests will need extra `add_test` lines, one for each scenario.
 
-4. Next, the swat executable should be created. See sections below.
+4. Next, the swift executable should be created. See sections below.
 
 5. The tests can now be performed using `ctest`.
 
@@ -20,7 +20,7 @@ Testing is performed through `cmake` and `ctest` implementing the following proc
    
    1. The scenario folder `Ames_sub1` is copied from the data directory to the build folder as `build/Ames_sub1)`
    
-   2. The swat model is executed in the `build/Ames_sub1` folder and will overwrite previous outputs
+   2. The swift model is executed in the `build/Ames_sub1` folder and will overwrite previous outputs
    
    3. `check.py` will read the file `build/Ames_sub1/.testfiles.txt`, containing a list of output file names. It may contain the file name `wb.txt` and `soc.txt` on separate lines.
    
@@ -44,7 +44,7 @@ Testing is performed through `cmake` and `ctest` implementing the following proc
 find_package(Python REQUIRED)
 
 set(check_py "${PROJECT_SOURCE_DIR}/test/check.py")
-set(exe_path "${PROJECT_BINARY_DIR}/${SWATPLUS_EXE}")
+set(exe_path "${PROJECT_BINARY_DIR}/${SWIFT_EXE}")
 set(test_dir "${PROJECT_BINARY_DIR}/data")
 set(ref_dir "${PROJECT_SOURCE_DIR}/data")
 
@@ -60,7 +60,7 @@ Tests are run using the `ctest` command, which is part if the `cmake` installati
 
 ```bash
 $ cmake -B build                # -> Generate the build files
-$ cmake --build build           # -> Build SWAT+ executable
+$ cmake --build build           # -> Build SWIFT executable
 
 $ cd build                      # -> change into the build folder
 $ ctest                         # -> Test all scenarios using ctest

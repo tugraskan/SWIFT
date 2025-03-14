@@ -34,17 +34,17 @@ $ git tag
 61.1
 ```
 
-To build the SWAT+ executable at version `60.0`, one has to checkout the source at that tag first:
+To build the SWIFT executable at version `60.0`, one has to checkout the source at that tag first:
 
 ```bash
 $ git checkout 60.0
 ```
 
-Then follow the build instructions below. It will eventually create the executable `swatplus-60.0.exe`. You can also switch back to HEAD of the main branch and again, follow the build steps. This will create the executable `swatplus-61.1-1-g92b4413.exe` which is the version one commit (`-1-`) after version `61.1`, starting with the object name: `92b4413......` (the `g` in the string indicates Git as the system that created the name).
+Then follow the build instructions below. It will eventually create the executable `swift-60.0.exe`. You can also switch back to HEAD of the main branch and again, follow the build steps. This will create the executable `swift-61.1-1-g92b4413.exe` which is the version one commit (`-1-`) after version `61.1`, starting with the object name: `92b4413......` (the `g` in the string indicates Git as the system that created the name).
 
 This tag-based building approach has the advantage to:
 
-- always align the version of the swat executable with the tagged version of the sources in the Git repository.
+- always align the version of the swift executable with the tagged version of the sources in the Git repository.
 
 - allow the fully automated version propagation into source files and executable in tandem with `cmake` .
 
@@ -58,9 +58,9 @@ execute_process(
   OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 
-# SWAT Version number
-SET(SWAT_VERSION ${TAG})
-set(SWATPLUS_EXE "swatplus-${SWAT_VERSION}.exe")
+# SWIFT Version number
+SET(SWIFT_VERSION ${TAG})
+set(SWIFT_EXE "swift-${SWIFT_VERSION}.exe")
 ```
 
 ## Versioning
@@ -68,13 +68,13 @@ set(SWATPLUS_EXE "swatplus-${SWAT_VERSION}.exe")
 Version information are projected into sources at build time. Below, the template `main.f90.in` is shown.
 
 ```fortran
-  prog = " SWAT+ @TODAY@        MODULAR Rev @YEAR@.@SWAT_VERSION@"
+  prog = " SWIFT @TODAY@        MODULAR Rev @YEAR@.@SWIFT_VERSION@"
       write (*,1000)
       open (9003,file='simulation.out')
       write (9003,1000)
- 1000 format(1x,"                  SWAT+               ",/,             &
-     &          "             Revision @SWAT_VERSION@  ",/,             &
-     &          "      Soil & Water Assessment Tool    ",/,             &
+ 1000 format(1x,"                  SWIFT               ",/,             &
+     &          "             Revision @SWIFT_VERSION@  ",/,             &
+     &          "      Soil & Water Integrated Flow Tool    ",/,             &
      &          "@CMAKE_Fortran_COMPILER_ID@ (@CMAKE_Fortran_COMPILER_VERSION@), @ISO@, @CMAKE_HOST_SYSTEM_NAME@",/,             &
      &          "    Program reading . . . executing",/)
   ...
@@ -98,14 +98,14 @@ endif()
 Running `cmake -B build` will create the file `main.f90` with resolved and and injected variables for `TODAY`, `ISO`, `YEAR`, and others:
 
 ```fortran
- prog = " SWAT+ Mar 04 2024        MODULAR Rev 2024.61.0.0"
+ prog = " SWIFT Mar 04 2024        MODULAR Rev 2024.61.0.0"
 
       write (*,1000)
       open (9003,file='simulation.out')
       write (9003,1000)
- 1000 format(1x,"                  SWAT+               ",/,             &
+ 1000 format(1x,"                  SWIFT               ",/,             &
      &          "             Revision 61.0.0  ",/,             &
-     &          "      Soil & Water Assessment Tool    ",/,             &
+     &          "      Soil & Water Integrated Flow Tool    ",/,             &
      &          "GNU (11.4.0), 2024-03-04 14:31:18, Linux",/,             &
      &          "    Program reading . . . executing",/)
   ...
