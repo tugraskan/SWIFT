@@ -20,6 +20,6 @@ Install the required packages in the order below. The Intel compiler requires Vi
 
 - In the same (!) terminal run the command `devenv`. This will start Visual Studio with the proper compiler settings.
 
-### Cloning the SWAT+ repository from GitHub
+### Cloning the SWIFT repository from GitHub
 
-Clone the SWAT+ repository from GitHub ...
+Clone the SWIFT repository from GitHub ...

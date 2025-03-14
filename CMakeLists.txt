@@ -1,4 +1,4 @@
-# SWAT+ cmake, req min v3.20 (ifx, etc. support)
+# SWIFT cmake, req min v3.20 (ifx, etc. support)
 ###############################################################
 if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}" OR
    "${CMAKE_SOURCE_DIR}/src" STREQUAL "${CMAKE_BINARY_DIR}")
@@ -7,7 +7,7 @@ endif()
 
 cmake_minimum_required(VERSION 3.20)
 
-project(swatplus VERSION 0.2 LANGUAGES Fortran)
+project(swift VERSION 0.2 LANGUAGES Fortran)
 
 include(CTest)
 
@@ -90,9 +90,9 @@ else()
     set(TY "")
 endif()
 
-# SWAT Version number
-set(SWAT_VERSION ${TAG})
-set(SWATPLUS_EXE "swatplus-${SWAT_VERSION}-${FFC}-${AR}${TY}")
+# SWIFT Version number
+set(SWIFT_VERSION ${TAG})
+set(SWIFT_EXE "swift-${SWIFT_VERSION}-${FFC}-${AR}${TY}")
 
 # Set this to 'TRUE' to see the fortran command on compile
 set(CMAKE_VERBOSE_MAKEFILE FALSE)
@@ -129,11 +129,11 @@ endif()
 
 
 file(GLOB sources src/*.f90)
-add_executable(${SWATPLUS_EXE} ${sources})
+add_executable(${SWIFT_EXE} ${sources})
 
 #############################################################################
 # Install
-install(TARGETS ${SWATPLUS_EXE} DESTINATION RUNTIME DESTINATION ${PROJECT_SOURCE_DIR})
+install(TARGETS ${SWIFT_EXE} DESTINATION RUNTIME DESTINATION ${PROJECT_SOURCE_DIR})
 
 
 #############################################################################
@@ -141,7 +141,7 @@ install(TARGETS ${SWATPLUS_EXE} DESTINATION RUNTIME DESTINATION ${PROJECT_SOURCE
 find_package(Python3 REQUIRED)
 
 set(spcheck "${PROJECT_SOURCE_DIR}/test/spcheck.py")
-set(exe_path "${PROJECT_BINARY_DIR}/${SWATPLUS_EXE}")
+set(exe_path "${PROJECT_BINARY_DIR}/${SWIFT_EXE}")
 set(test_dir "${PROJECT_BINARY_DIR}/data")
 set(ref_dir  "${PROJECT_SOURCE_DIR}/data")
 
@@ -166,7 +166,7 @@ message( "--  DEBUG             ${CMAKE_Fortran_FLAGS_DEBUG}")
 message( "-- PROJECT_DIR        ${PROJECT_SOURCE_DIR}")
 message( "-- BINARY_DIR         ${PROJECT_BINARY_DIR}")
 message( "-- Install Prefix     ${CMAKE_INSTALL_PREFIX}")
-message( "-- Executable         ${SWATPLUS_EXE}, rev/tag: ${SWAT_VERSION}")
+message( "-- Executable         ${SWIFT_EXE}, rev/tag: ${SWIFT_VERSION}")
 message( "-- FORD project       ${PROJECT_SOURCE_DIR}/ford.md")
 message( "-- Test Data Dir      ${ref_dir}")
 message( "--  Abs Error         ${aerr}")

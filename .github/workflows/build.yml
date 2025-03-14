@@ -1,6 +1,6 @@
-# SWAT+ CI for GitHub, O. David, 2024, LGPL 2.1
+# SWIFT CI for GitHub, O. David, 2024, LGPL 2.1
 
-name: Build/Release SWAT+
+name: Build/Release SWIFT
 
 on:
   push:
@@ -35,7 +35,7 @@ jobs:
          ref: '${{ github.event.inputs.rev }}'
          fetch-tags: true
          fetch-depth: 0
-     - name: Get SWAT+ version
+     - name: Get SWIFT version
        id: get_version
        run: |
           V=`git describe --tags`
@@ -50,7 +50,7 @@ jobs:
          name: release_tag
          path: v.txt
 
-##### Build swat with GNU
+##### Build SWIFT with GNU
   build-gnu:
     runs-on: ${{ matrix.os }}
     needs:
@@ -75,7 +75,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Build SWAT+
+      - name: Build SWIFT
         id: build_exe
         run: |
           echo ${{ env.FC }}
@@ -83,11 +83,11 @@ jobs:
 
           RELEASE_VERSION=${GITHUB_REF#refs/*/}
           os="$RUNNER_OS"
-          e="build/swatplus-*"
+          e="build/swift-*"
           gen="Unix"
 
           if [ "$RUNNER_OS" == "Windows" ]; then
-             e="build/swatplus-*.exe"
+             e="build/swift-*.exe"
              gen="MinGW"
           fi
 
@@ -100,7 +100,7 @@ jobs:
           # build
           cmake --build build --parallel 4
 
-          exebase=`basename -s .exe build/swatplus-*`
+          exebase=`basename -s .exe build/swift-*`
           exez="${exebase}.zip"
           exe=`ls $e`
 
@@ -112,11 +112,11 @@ jobs:
           echo "exez=$exez" >> $GITHUB_OUTPUT
           echo "os=$os" >> $GITHUB_OUTPUT
 
-          ls -hl build/swatplus-*
-          file build/swatplus-*
+          ls -hl build/swift-*
+          file build/swift-*
 
           if [ "$RUNNER_OS" != "Windows" ]; then
-            (cd build && zip ../$exez swatplus-*)
+            (cd build && zip ../$exez swift-*)
           fi
 
         shell: bash
@@ -178,7 +178,7 @@ jobs:
         with:
           name: release_tag
 
-      - name: Build SWAT+
+      - name: Build SWIFT
         id: build_exe
         run: |
           echo ${{ env.FC }}
@@ -193,20 +193,20 @@ jobs:
               -D CMAKE_Fortran_COMPILER=${{ env.FC }} \
               -D TAG=$RELEASE_VERSION \
               -D CMAKE_BUILD_TYPE=Release
-            e="build/swatplus-*"
+            e="build/swift-*"
           elif [ "$RUNNER_OS" == "Windows" ]; then
             cmake -B build -G "MinGW Makefiles" \
               -D CMAKE_Fortran_COMPILER="C:\Program Files (x86)\Intel\oneAPI\compiler\2024.1\bin\${{ env.FC }}.exe" \
               -D TAG=$RELEASE_VERSION \
               -D CMAKE_BUILD_TYPE=Release
-            e="build/swatplus-*.exe"
+            e="build/swift-*.exe"
           elif [ "$RUNNER_OS" == "macOS" ]; then
             cmake -B build \
               -D CMAKE_Fortran_COMPILER=${{ env.FC }} \
               -D TAG=$RELEASE_VERSION \
               -D CMAKE_APPLE_SILICON_PROCESSOR="x86_64" \
               -D CMAKE_BUILD_TYPE=Release
-            e="build/swatplus-*"
+            e="build/swift-*"
           else
             echo "$RUNNER_OS not supported."
             exit 1
@@ -215,7 +215,7 @@ jobs:
           # compile
           cmake --build build --parallel 4
 
-          exebase=`basename -s .exe build/swatplus-*`
+          exebase=`basename -s .exe build/swift-*`
           exez="${exebase}.zip"
           exe=`ls $e`
 
@@ -227,11 +227,11 @@ jobs:
           echo "exez=$exez" >> $GITHUB_OUTPUT
           echo "os=$os" >> $GITHUB_OUTPUT
 
-          ls -hl build/swatplus-*
-          file build/swatplus-*
+          ls -hl build/swift-*
+          file build/swift-*
 
           if [ "$RUNNER_OS" != "Windows" ]; then
-            (cd build && zip ../$exez swatplus-*)
+            (cd build && zip ../$exez swift-*)
           fi
 
         shell: bash
@@ -307,8 +307,5 @@ jobs:
         draft: false
         # name:  ${{ github.event.release.tag_name }}
         name:  ${{ steps.read_ver.outputs.rv }}
-        files: swatplus-*
+        files: swift-*
         generate_release_notes: true
-
-
-

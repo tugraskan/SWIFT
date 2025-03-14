@@ -87,20 +87,20 @@ def read_output(fname, spec_dict, write_csv = False):
             try:
                 df = pd.read_csv(fname, skiprows=skiprows, delim_whitespace=delim_whitespace, header=header)
             except FileNotFoundError:
-                print(f"Swat+ output filename {fname} not found.")
+                print(f"SWIFT output filename {fname} not found.")
                 exit(1)
             except Exception as e:
-                print(f"Swat+ output filename {fname} could not be parsed for some reason.")
+                print(f"SWIFT output filename {fname} could not be parsed for some reason.")
                 print(f"The error is: {e}")
                 exit(1)
         if header is None and column_names is not None:
             try:
                 df = pd.read_csv(fname, skiprows=skiprows, delim_whitespace=delim_whitespace, names=column_names)
             except FileNotFoundError:
-                print(f"Swat+ output filename {fname} not found.")
+                print(f"SWIFT output filename {fname} not found.")
                 exit(1)
             except Exception as e:
-                print(f"Swat+ output filename {fname} could not be parsed for some reason.")
+                print(f"SWIFT output filename {fname} could not be parsed for some reason.")
                 print(f"The error is: {e}")
                 exit(1)
 
@@ -109,7 +109,7 @@ def read_output(fname, spec_dict, write_csv = False):
                 output_file_name = fname + ".csv"
                 df.to_csv(output_file_name, sep=output_seperator, index = False)
     else:
-        print("Swat+ output filename not found in read specification dictionary.")
+        print("SWIFT output filename not found in read specification dictionary.")
         exit(1)
     return df
 

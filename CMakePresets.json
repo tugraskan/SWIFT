@@ -4,7 +4,7 @@
         {
             "name": "ifort_debug",
             "displayName": "ifort debug version",
-            "description": "Preset to builds ifort debug executable for swatplus",
+            "description": "Preset to builds ifort debug executable for swift",
             "binaryDir": "build/debug",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
@@ -15,7 +15,7 @@
         {
             "name": "ifx_debug",
             "displayName": "ifx debug version",
-            "description": "Preset to builds a ifx debug executable for swatplus",
+            "description": "Preset to builds a ifx debug executable for swift",
             "binaryDir": "build/debug",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
@@ -26,7 +26,7 @@
         {
             "name": "gfortran_debug_windows",
             "displayName": "gfortran debug version",
-            "description": "Builds a gfortran debug executable for swatplus for windows",
+            "description": "Builds a gfortran debug executable for swift for windows",
             "binaryDir": "build/debug",
             "generator": "Ninja",
             "condition": {
@@ -51,7 +51,7 @@
         {
             "name": "gfortran_debug_linux",
             "displayName": "gfortran debug version",
-            "description": "Builds a gfortran debug executable for swatplus for linux",
+            "description": "Builds a gfortran debug executable for swift for linux",
             "binaryDir": "build/debug",
             "condition": {
                 "type": "equals",
@@ -67,7 +67,7 @@
         {
             "name": "gfortran_debug_macbook",
             "displayName": "gfortran debug version",
-            "description": "Builds a gfortran debug executable for swatplus for macbook",
+            "description": "Builds a gfortran debug executable for swift for macbook",
             "binaryDir": "build/debug",
             "condition": {
                 "type": "equals",
