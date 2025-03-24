@@ -4,7 +4,6 @@ name: Build/Test SWIFT
 
 on:
   push:
-
   workflow_dispatch:
 
 permissions:
@@ -13,23 +12,17 @@ permissions:
   pull-requests: write
 
 jobs:
-
   build:
     runs-on: ${{ matrix.os }}
     if: endsWith(github.ref_name, 'main') == true
     strategy:
       fail-fast: false
       matrix:
-        # os: [ubuntu-latest, windows-latest, macos-latest]
         os: [ubuntu-latest]
         toolchain:
           - {compiler: intel, version: '2024.1'}
           - {compiler: intel-classic, version: '2021.9'}
         exclude:
-          # - os: macos-latest
-          #   toolchain: {compiler: intel, version: '2024.1'}
-          # - os: windows-latest
-          #   toolchain: {compiler: intel-classic, version: '2021.9'}
           - os: ubuntu-latest
             toolchain: {compiler: intel-classic, version: '2021.9'}
 
@@ -77,6 +70,19 @@ jobs:
           # check
           ls -hl build/swift-*
           file build/swift-*
+
+      - name: List Directory Contents (before tests)
+        run: |
+          echo "Listing directory contents before running tests:"
+          ls -R /home/runner/work/SWIFT/SWIFT/data/Ames_sub1/SWIFT/
+        shell: bash
+
+      - name: Verify required test data files
+        run: |
+          if [ ! -f "/home/runner/work/SWIFT/SWIFT/data/Ames_sub1/SWIFT/aqu.out" ]; then
+            echo "Required file aqu.out is missing."
+            exit 1
+          fi
         shell: bash
 
       - name: Run Tests
