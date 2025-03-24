@@ -1,0 +1,15 @@
+aqu.out
+basin_ch.out
+basin_ex.out
+cha.out
+cha_bank.out
+cha_bed.out
+cha_fp.out
+drareas.out
+hru_ex.out
+hyd.out
+lsu_ex.out
+out.out
+res.out
+res_flo.out
+ru.out"
