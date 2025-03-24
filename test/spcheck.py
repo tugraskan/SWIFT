@@ -158,10 +158,10 @@ def copy_data(from_dir: str, to_dir: str) -> None:
     shutil.copytree(from_dir, to_dir, dirs_exist_ok=True)
 
 
-def run_swat(swat_model: str, wdir: str) -> int:
-    if not os.path.exists(swat_model):
-        raise Exception(f'Model not found: {swat_model}')
-    p = Popen(executable=swat_model, args=[], cwd=wdir, stdout=sys.stdout, stderr=sys.stdout)
+def run_swift(swift_model: str, wdir: str) -> int:
+    if not os.path.exists(swift_model):
+        raise Exception(f'Model not found: {swift_model}')
+    p = Popen(executable=swift_model, args=[], cwd=wdir, stdout=sys.stdout, stderr=sys.stdout)
     p.wait()
     if p.returncode != 0:
         print(f"\nSWIFT exited with code: {p.returncode}")
@@ -184,24 +184,27 @@ def comp_scenario(dir1: str, dir2: str, aerr: float, rerr: float, files: list[st
     return total_err
 
 
-def ctest_all(swat_model: str, test_data_dir: str, tmp_dir: str, aerr: float, rerr: float, nlines:int, nerrorlines:int) -> int:
-    scenario_dir: str = os.path.join(tmp_dir, pathlib.PurePath(test_data_dir).name)
+def ctest_all(swift_model: str, test_data_dir: str, tmp_dir: str, aerr: float, rerr: float, nlines: int, nerrorlines: int) -> int:
+    # Use tmp_dir directly as the scenario directory (avoid adding extra subdirectory)
+    scenario_dir: str = tmp_dir
     pathlib.Path(tmp_dir).mkdir(parents=True, exist_ok=True)
 
-    # 1. copy data from data dir to scenario dir
+    # 1. Copy data from the golden data directory to the scenario directory.
     copy_data(test_data_dir, scenario_dir)
 
-    # 2. run swat+ in the scenario dir
-    run_swat(swat_model, scenario_dir)
+    # 2. Run swift+ in the scenario directory.
+    run_swift(swift_model, scenario_dir)
 
-    # 3. compare the selected output files
-    # files = ['hru_ls_aa.txt','mgt_out.txt', 'hru_totc.txt', 'basin_totc.txt', 'basin_wb_aa.txt']
-    test_files: str = os.path.join(scenario_dir, '.testfiles.txt')
+    # 3. Build the path to the test files list.
+    # Note: Use 'testfiles.txt' (without the dot) to match your expected filename.
+    test_files: str = os.path.join(scenario_dir, 'testfiles.txt')
     errors: int = 0
     if os.path.isfile(test_files):
         with open(test_files) as f:
-            files = [line.strip() for line in f if line.strip() != '' and not line.strip().startswith('#')]
+            # Remove any surrounding quotes from each line
+            files = [line.strip().strip('"') for line in f if line.strip() != '' and not line.strip().startswith('#')]
             errors = comp_scenario(test_data_dir, scenario_dir, aerr, rerr, files, nlines=nlines, nerrorlines=nerrorlines)
+
     else:
         raise Exception(f'Not found: \'{test_files}\', cannot compare output files.')
     return errors
@@ -254,8 +257,8 @@ def run(args):
     # copy scenario
     copy_data(sce_src_path, run_path)
 
-    # run swat
-    ret = run_swat(exe_path, run_path)
+    # run swift
+    ret = run_swift(exe_path, run_path)
 
     if ret != 0:
         os.rename(run_path, run_path + '-FAILED')
@@ -288,7 +291,16 @@ def cmp(args):
                 print(f'\n\nTotal: {err} differences with relerr of >= {args.relerr} and abserr >= {args.abserr}')
 
 
+def ensure_exe_extension(path):
+    # If we're on Windows and the path doesn't already end with ".exe", append it.
+    if os.name == 'nt' and not path.lower().endswith('.exe'):
+        return path + '.exe'
+    return path
+
 def ctest(args):
+    # Automatically adjust the model path on Windows
+    args.model_path = ensure_exe_extension(args.model_path)
+    
     if not os.path.exists(args.model_path):
         raise Exception(f'model not found: {args.model_path}')
     if not os.path.isdir(args.data_dir):

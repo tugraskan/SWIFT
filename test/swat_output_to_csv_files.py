@@ -1,161 +1,86 @@
 import pandas as pd
 
-output_seperator = "\t"
+output_separator = "\t"
 
+# Default spec for files following the format:
+# header, column names, units, then data.
 default_spec = {
-            "skiprows": [0, 2],
-            "header": [0],
-            "column_names": None,
-            "delim_whitespace": True
-            },
+    "skiprows": [0, 2],   # Skip the general header and the units row.
+    "header": 0,          # Use the row after skipping as the header.
+    "column_names": None,
+    "delim_whitespace": True
+}
 
-default_spec2 = {
-            "skiprows": [0],
-            "header": [0],
-            "column_names": None,
-            "delim_whitespace": True
-            },
-
+# Dictionary for new output files using relative paths.
 spec_dict = {
-        "files_out.out": {
-            "skiprows": [0],
-            "header": None,
-            "column_names": ["type", "filename"],
-            "delim_whitespace": True
-            },
-        "hru_orgc.txt": default_spec[0],
-        "checker.out": {
-            "skiprows": 3,
-            "header": None,
-            "column_names": ["sname", "hydgrp", "zmx", "usle_k", "sumfc", "sumul", "usle_p", 
-                             "usle_ls", "esco", "epco", "cn3_swf", "perco", "latq_co", "tiledrain"],
-            "delim_whitespace": True
-            },
-        "hru_wb_aa.txt": default_spec[0],
-        "hru_ncycle_aa.txt": default_spec[0],
-        "hru_nb_aa.txt": default_spec[0],
-        "hru_carbon_aa.txt": default_spec[0],
-        "hru_nut_carb_gl_aa.txt": default_spec[0],
-        "hru_ls_aa.txt": default_spec[0],
-        "hru_pw_aa.txt": default_spec[0],
-        "basin_wb_aa.txt": default_spec[0],
-        "basin_nb_aa.txt": default_spec[0],
-        "basin_carbon_aa.txt": default_spec[0],
-        "basin_ls_aa.txt": default_spec[0],
-        "basin_pw_aa.txt": default_spec[0],
-        "crop_yld_yr.txt": {
-            "skiprows": 2,
-            "header": [0],
-            "column_names": None,
-            "delim_whitespace": True
-            },
-        "crop_yld_aa.txt": {
-            "skiprows": 2,
-            "header": [0],
-            "column_names": None,
-            "delim_whitespace": True
-            },
-        "lu_change_out.txt": default_spec2[0],
-        "basin_crop_yld_yr.txt": default_spec2[0],
-        "basin_crop_yld_aa.txt": default_spec2[0],
-        "hydout_aa.txt": default_spec[0],
-        "hydin_aa.txt": default_spec[0],
-        "deposition_aa.txt": default_spec[0],
-        "wetland_aa.txt": default_spec[0],
-        "basin_aqu_aa.txt": default_spec[0],
-        "basin_res_aa.txt": default_spec[0],
-        "recall_aa.txt": default_spec[0],
-        "basin_cha_aa.txt": default_spec[0],
-        "basin_sd_cha_aa.txt": default_spec[0],
-        "basin_sd_chamorph_aa.txt": default_spec[0],
-        "basin_psc_aa.txt": default_spec[0],
-        "ru_aa.txt": default_spec[0],
-        }
-# print(spec_dict)
-# exit(0)
+    "aqu.out": default_spec,
+    "basin_ch.out": default_spec,
+    "basin_ex.out": default_spec,
+    "cha.out": default_spec,
+    "cha_bank.out": default_spec,
+    "cha_bed.out": default_spec,
+    "cha_fp.out": default_spec,
+    "drareas.out": default_spec,
+    "hru_ex.out": default_spec,
+    "hyd.out": default_spec,
+    "lsu_ex.out": default_spec,
+    "out.out": default_spec,
+    "res.out": default_spec,
+    "res_flo.out": default_spec,
+    "ru.out": default_spec,
+}
 
-
-def read_output(fname, spec_dict, write_csv = False):
-    print(fname)
+def read_output(fname, spec_dict, write_csv=False):
+    print(f"Processing file: {fname}")
     if fname in spec_dict:
-        df = None
-        skiprows = spec_dict[fname]["skiprows"]
-        header = spec_dict[fname]["header"]
-        column_names = spec_dict[fname]["column_names"] 
-        delim_whitespace = spec_dict[fname]["delim_whitespace"]
-        if header is not None:
-            try:
+        spec = spec_dict[fname]
+        skiprows = spec["skiprows"]
+        header = spec["header"]
+        column_names = spec["column_names"]
+        delim_whitespace = spec["delim_whitespace"]
+        try:
+            if header is not None:
                 df = pd.read_csv(fname, skiprows=skiprows, delim_whitespace=delim_whitespace, header=header)
-            except FileNotFoundError:
-                print(f"SWIFT output filename {fname} not found.")
-                exit(1)
-            except Exception as e:
-                print(f"SWIFT output filename {fname} could not be parsed for some reason.")
-                print(f"The error is: {e}")
-                exit(1)
-        if header is None and column_names is not None:
-            try:
+            elif header is None and column_names is not None:
                 df = pd.read_csv(fname, skiprows=skiprows, delim_whitespace=delim_whitespace, names=column_names)
-            except FileNotFoundError:
-                print(f"SWIFT output filename {fname} not found.")
-                exit(1)
-            except Exception as e:
-                print(f"SWIFT output filename {fname} could not be parsed for some reason.")
-                print(f"The error is: {e}")
-                exit(1)
-
-        if write_csv:
-            if df is not None:
-                output_file_name = fname + ".csv"
-                df.to_csv(output_file_name, sep=output_seperator, index = False)
+        except FileNotFoundError:
+            print(f"File {fname} not found.")
+            exit(1)
+        except Exception as e:
+            print(f"File {fname} could not be parsed: {e}")
+            exit(1)
+        if write_csv and df is not None:
+            output_file_name = fname + ".csv"
+            df.to_csv(output_file_name, sep=output_separator, index=False)
     else:
-        print("SWIFT output filename not found in read specification dictionary.")
+        print("Filename not found in the specification dictionary.")
         exit(1)
     return df
 
-
 def run():
-    fname = "files_out.out"
-    df = read_output(fname, spec_dict, True)
-    for index, row in df.iterrows():
-        fname = row["filename"]
-        if fname == "mgt_out.txt" or fname == "yield.out":
-            continue
-        df = read_output(fname, spec_dict, True)
-    # fname = "hru_orgc.txt"
-    # fname = "hru_wb_aa.txt"
-    # fname = "hru_ncycle_aa.txt"
-    # fname = "hru_nb_aa.txt"
-    # fname = "hru_carbon_aa.txt"
-    # fname = "hru_nut_carb_gl_aa.txt"
-    # fname = "hru_ls_aa.txt"
-    # fname = "hru_pw_aa.txt"
-    # fname = "hru_pw_aa.txt"
-    # fname = "basin_wb_aa.txt"
-    # fname = "basin_nb_aa.txt"
-    # fname = "basin_carbon_aa.txt"
-    # fname = "basin_ls_aa.txt"
-    # fname = "basin_pw_aa.txt"
-    # fname = "crop_yld_yr.txt"
-    # fname = "crop_yld_aa.txt"
-    # fname = "lu_change_out.txt"
-    # fname = "basin_crop_yld_yr.txt"
-    # fname = "basin_crop_yld_aa.txt"
-    # fname = "hydout_aa.txt"
-    # fname = "hydin_aa.txt"
-    # fname = "deposition_aa.txt"
-    # fname = "wetland_aa.txt"
-    # fname = "basin_aqu_aa.txt"
-    # fname = "basin_res_aa.txt"
-    # fname = "recall_aa.txt"
-    # fname = "basin_cha_aa.txt"
-    # fname = "basin_sd_cha_aa.txt"
-    # fname = "basin_sd_chamorph_aa.txt"
-    # fname = "basin_psc_aa.txt"
-    # fname = "ru_aa.txt"
-    # fname = "files_out.out"
-    # df = read_output(fname, spec_dict, True)
-
+    files_to_process = [
+        "aqu.out",
+        "basin_ch.out",
+        "basin_ex.out",
+        "cha.out",
+        "cha_bank.out",
+        "cha_bed.out",
+        "cha_fp.out",
+        "drareas.out",
+        "hru_ex.out",
+        "hyd.out",
+        "lsu_ex.out",
+        "out.out",
+        "res.out",
+        "res_flo.out",
+        "ru.out"
+    ]
+    
+    for fname in files_to_process:
+        df = read_output(fname, spec_dict, write_csv=True)
+        print(f"Preview of {fname}:")
+        print(df.head())
+        print("\n" + "-"*40 + "\n")
 
 if __name__ == "__main__":
     run()
