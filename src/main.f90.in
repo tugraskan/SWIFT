@@ -9,14 +9,14 @@
       integer :: iob = 0
       integer, allocatable, dimension(:) :: cmd_next
     
-      prog = " SWAT+ @TODAY@        MODULAR Rev @YEAR@.@SWAT_VERSION@"
+      prog = " SWIFT @TODAY@        MODULAR Rev @YEAR@.@SWIFT_VERSION@"
 
       write (*,1000)
       open (9003,file='simulation.out')
       write (9003,1000)
- 1000 format(1x,"                  SWAT+               ",/,             &
-     &          "             Revision @SWAT_VERSION@  ",/,             &
-     &          "      Soil & Water Assessment Tool    ",/,             &
+ 1000 format(1x,"                  SWIFT               ",/,             &
+     &          "             Revision @SWIFT_VERSION@  ",/,             &
+     &          "      Soil and Water Integrated Flow Tool    ",/,             &
      &          "@CMAKE_Fortran_COMPILER_ID@ (@CMAKE_Fortran_COMPILER_VERSION@), @ISO@, @CMAKE_HOST_SYSTEM_NAME@",/,             &
      &          "    Program reading . . . executing",/)
       

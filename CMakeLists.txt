@@ -142,14 +142,14 @@ find_package(Python3 REQUIRED)
 
 set(spcheck "${PROJECT_SOURCE_DIR}/test/spcheck.py")
 set(exe_path "${PROJECT_BINARY_DIR}/${SWIFT_EXE}")
-set(test_dir "${PROJECT_BINARY_DIR}/data")
-set(ref_dir  "${PROJECT_SOURCE_DIR}/data")
+set(test_dir "${PROJECT_BINARY_DIR}/data/Ames_sub1/SWIFT")
+set(ref_dir  "${PROJECT_SOURCE_DIR}/data/Ames_sub1/SWIFT")
 
 # error tolerances
 set(rerr "0.01")
 set(aerr "1e-8")
 
-add_test(Ames_sub1   ${Python3_EXECUTABLE} ${spcheck} ctest ${exe_path} ${ref_dir}/Ames_sub1 ${test_dir} --abserr ${aerr} --relerr ${rerr})
+add_test(Ames_sub1 ${Python3_EXECUTABLE} ${spcheck} ctest ${exe_path} ${ref_dir} ${test_dir} --abserr ${aerr} --relerr ${rerr})
 # add_test(Ithaca_sub6 python3 ${check_py} ${exe_path} ${ref_dir}/Ithaca_sub6 ${test_dir} ${aerr} ${rerr})
 
 
